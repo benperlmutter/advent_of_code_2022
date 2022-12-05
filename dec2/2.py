@@ -1,61 +1,37 @@
-#dec1 1
+#dec2 2
 
 file1 = open('input.txt', 'r')
 lines = file1.readlines()
 
-abc_s = "abcdefghijklmnopqrstuvwxyz"
 
-scoreDict = {}
-dict1 = {}
-for char in range(len(abc_s)):
-	scoreDict[abc_s[char]] = char+1
-	dict1[abc_s[char]] = 0
-	dict1[abc_s[char].upper()] = 0
-	# print(scoreDict)
+solutionDict = {
+	"X": {
+	"A":3+0,
+	"B":1+0,
+	"C":2+0
+	},
+	"Y": {
+	"A":1+3,
+	"B":2+3,
+	"C":3+3
+	},
+	"Z": {
+	"A":2+6,
+	"B":3+6,
+	"C":1+6
+	}
+}
 
-count = 0
-thisScore = 0
-setC = 1
-
+score = 0
 for line in lines:
 	thisLine = line.strip()
-	if setC % 3 == 1:
-		for char in thisLine:
-			dict1[char] = 1
-	elif setC % 3 == 2:
-		for char in thisLine:
-			if dict1.get(char) == True:
-				dict1[char] += 1
-				# print(dict1[char])
-	elif setC % 3 == 0:
-		print(thisLine)
-		for char in thisLine:
-			# print("current set is {} and dict looks like {}".format(setC, dict1))
-			print(dict1.get("r") == True)
+	splitLine = thisLine.split()
+	print(thisLine)
+	them = splitLine[0]
+	me = splitLine[1]
+	score += solutionDict[me][them]
+	# print("{} vs {}".format(them, me))
+	# print("{} and {}".format(solutionDict[them][me], score))
+	# print("Line {}: {}".format(count, line.strip()))
 
-			if dict1[char] > 1:
-				# print(char)
-				# print("the CHAR {}".format(char))
-
-				if dict1[char] > 1:
-					shared = char
-					count += scoreDict[shared.lower()]
-					thisScore = scoreDict[shared.lower()]
-					if shared == shared.upper():
-						count += 26 
-						thisScore += 26
-					for char in range(len(abc_s)):
-						dict1[abc_s[char]] = 0
-						dict1[abc_s[char].upper()] = 0
-				# print("count is {}".format(count))
-				# print(thisScore)
-	# print("current set is {} and dict looks like {}".format(setC, dict1))
-
-	setC += 1
-
-print(count)
-
-
-
-
-
+print(score)

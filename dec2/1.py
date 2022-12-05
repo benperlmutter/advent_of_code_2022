@@ -1,4 +1,4 @@
-#dec1 1
+#dec2 1
 
 file1 = open('input.txt', 'r')
 lines = file1.readlines()
