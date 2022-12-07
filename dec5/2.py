@@ -3,70 +3,118 @@
 # file1 = open('sample_input.txt', 'r')
 file1 = open('input.txt', 'r')
 lines = file1.readlines()
-count = 0
-newCount = 0
-lineNum = 0
-oldStr = ""
-newStr = ""
-newerCount = 0
+
+lineCounter = 1
+
+counter = ""
+stackLines = []
+moveLines = []
+realStack = []
 for line in lines:
-	lineNum +=1
-	thisLine = line.strip()
-	elves = thisLine.split(',')
-	elf1 = elves[0].split('-')
-	elf2 = elves[1].split('-')
-	elf11 = int(elf1[0])
-	elf12 = int(elf1[1])
-	elf21 = int(elf2[0])
-	elf22 = int(elf2[1])
-	elf1Str = ","
-	elf2Str = ","
-	for i in range(elf11, elf12+1):
-		elf1Str += str(i)+","
-	for g in range(elf21, elf22+1):
-		elf2Str += str(g)+","
+	splitLine = line.split(" ")
+	if counter == "":
+		stackLines.append(splitLine)
+		if splitLine[0] == '\n':
+			counter = " "
+	elif counter == " ":
+		moveLines.append(splitLine)
 
-	# print("elf1 {}".format(elf1Str))
-	# print("elf2 {}".format(elf2Str))
+for i in range(int(stackLines[-2][-2])):
+	realStack.append([])
 
-	if elf1Str in elf2Str:
-		oldStr += "elf1 in elf2 {} {}".format(elf1Str, elf2Str)+'\n'
-		if lineNum == 991:
-			print("elf1 in elf2 {} {}".format(elf1Str, elf2Str))
-		# print("elf1 in elf2 {} {}".format(elf1Str, elf2Str))
-		count +=1
-		print(lineNum)
-	elif elf2Str in elf1Str:
-		oldStr += "elf2 in elf1 {} {}".format(elf2Str, elf1Str)+'\n'
-		if lineNum == 991:
-			print("elf1 in elf2 {} {}".format(elf1Str, elf2Str))
-		# print("elf2 in elf1 {} {}".format(elf2Str, elf1Str))
-		count +=1
-		print(lineNum)
+# for i in stackLines:
+# 	print(i)
 
-	if elf1Str.find(elf2Str) > -1:
-		newStr += "elf2 in elf1 {} {}".format(elf2Str, elf1Str)+'\n'
-		newCount += 1
-		# print(lineNum)
-	elif elf2Str.find(elf1Str) > -1:
-		newStr += "elf1 in elf2 {} {}".format(elf1Str, elf2Str)+'\n'
-		newCount += 1
-		# print(lineNum)
+for row in stackLines[::-1]:
+	lineCounter += 1
+	# print(row)
+	counter = 0
+	spaceCounter = 0
+	for i in row:
+		print("counter {} & spaceCounter {} & i {}".format(counter, spaceCounter, str(i)))
+		if len(i) > 1:
+			realStack[counter].append(i[1])
+			print(realStack[counter])
+			counter += 1
+		elif i == "" or i == '\n':
+			if spaceCounter == 3:
+				counter += 1
+				spaceCounter = 0
+			spaceCounter += 1
 
-	if ((elf11 <= elf21) and (elf12 >= elf21)) or ((elf11 <= elf22) and (elf12 >= elf22)) or ((elf21 <= elf11) and (elf22 >= elf11)) or ((elf21 <= elf12) and (elf22 >= elf12)):
-		newerCount += 1
-		# print(lineNum)
+# print(realStack[0].pop())
 
+# print(realStack)
+i = 1
+for x in realStack:
+	print("{} {}".format(i,x))
+	i+=1
 
-# print(newStr)
-# print("final count is {}".format(newCount))
+count = 1
 
-test1 = "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,"
-test2 = "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,"
+for line in moveLines:
+	lineCounter += 1
+	# print(int(lines[1]))
+	# print(line)
+	numMoves = int(line[1])
+	start = int(line[3])
+	end = line[5]
+	splitEnd = end.split('\n')
+	end = int(splitEnd[0])
+	# print("move {} from {} to {}".format(numMoves, start, end))
+	# print("{} {} {}".format(numMoves, start, end))
+	# print(lineCounter)
+	# i = 1
+	# for x in realStack:
+	# 	print("{} {}".format(i,x))
+	# 	i+=1
+	craneList = []
+	for move in range(numMoves):
+		craneList.append(realStack[start-1].pop())
+		# if realStack[start-1]:
 
-# print(test1.find(test2))
-print(count)
-print(newCount)
-print(newerCount)
+		# realStack[end-1].append(realStack[start-1].pop())
+		# if count > 30 and count <= 37:
+		# 	print("in while")
+		# 	print("{} {} {}".format(numMoves, start, end))
+		# 	print(lineCounter)
+		# 	i = 1
+		# 	for x in realStack:
+		# 		print("{} {}".format(i,x))
+		# 		i += 1
+	for move in range(numMoves):
+		realStack[end-1].append(craneList.pop())
 
+	count += 1
+		# print("move")
 
+print("end")
+# print(realStack)
+i = 1
+string = ""
+for x in realStack:
+	print("{} {}".format(i,x))
+	string += x[-1]
+	i+=1
+
+print(string)
+
+# for stack in realStack:
+	# print(stack.pop())
+# print(moveLines[-2])
+	# n = 3
+	# if counter == 1:
+	# 	for i in range (0, len(line), n):
+	# 		print(line[i:i+n])
+	# 		counter +=1
+	# if counter == 1:
+	# 	for char in line:
+	# 		if mod % 2 != 0:
+
+	# 		if char == '\n':
+	# 			print('newline')
+	# 		elif char == ' ':
+	# 			print('space')
+	# 		else:
+	# 			print(char)
+	# 	counter +=1
