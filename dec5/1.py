@@ -22,20 +22,25 @@ for line in lines:
 for i in range(int(stackLines[-2][-2])):
 	realStack.append([])
 
+# for i in stackLines:
+# 	print(i)
+
 for row in stackLines[::-1]:
 	lineCounter += 1
 	# print(row)
 	counter = 0
 	spaceCounter = 0
 	for i in row:
+		print("counter {} & spaceCounter {} & i {}".format(counter, spaceCounter, str(i)))
 		if len(i) > 1:
 			realStack[counter].append(i[1])
+			print(realStack[counter])
 			counter += 1
 		elif i == "" or i == '\n':
-			spaceCounter += 1
 			if spaceCounter == 3:
 				counter += 1
 				spaceCounter = 0
+			spaceCounter += 1
 
 # print(realStack[0].pop())
 
@@ -56,11 +61,15 @@ for line in moveLines:
 	end = line[5]
 	splitEnd = end.split('\n')
 	end = int(splitEnd[0])
+	# print("move {} from {} to {}".format(numMoves, start, end))
 	# print("{} {} {}".format(numMoves, start, end))
 	# print(lineCounter)
+	# i = 1
 	# for x in realStack:
-		# print(x)
+	# 	print("{} {}".format(i,x))
+	# 	i+=1
 	for move in range(numMoves):
+		# if realStack[start-1]:
 		realStack[end-1].append(realStack[start-1].pop())
 		# if count > 30 and count <= 37:
 		# 	print("in while")
@@ -73,7 +82,16 @@ for line in moveLines:
 	count += 1
 		# print("move")
 
+print("end")
 # print(realStack)
+i = 1
+string = ""
+for x in realStack:
+	print("{} {}".format(i,x))
+	string += x[-1]
+	i+=1
+
+print(string)
 
 # for stack in realStack:
 	# print(stack.pop())
