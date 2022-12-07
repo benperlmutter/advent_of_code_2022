@@ -1,55 +1,76 @@
 #dec1 1
 
+def sumDir(dirDict,key):
+	a = dirDict[key]
+	acc = 0
+	if a[0] == []:
+		collector = 0
+		for num in a[1]:
+			collector += num
+		return collector
+	else:
+		for d in a[0]:
+			acc += sumDir(dirDict,d)
+	for n in a[1]:
+		acc += n
+
+	return acc
+
+totalDisk = 70000000
+unusedNeeded = 30000000
+# file1 = open('simple_input.txt', 'r')
 # file1 = open('sample_input.txt', 'r')
 file1 = open('input.txt', 'r')
 lines = file1.readlines()
 
-charIndex = 1
-char1 = ""
-char2 = ""
-char3 = ""
-char4 = ""
-counter = 1
-finalCounter = 0
-finalStr = ""
+dirDict = {"/":[[],[]]}
+
+currDir = []
+acc = 0
 for line in lines:
-	counter = 1
-	charStr = ""
-	firstTime = True
-	for char in line:
-		if counter <= 14:
-			charStr += char
-		else:
-			charStr = charStr[1:]+char
-			# print("{} is {}".format(counter, charStr))
+	el = line.split(" ")
+	if el[0] == "$":
+		acc = 0
+		if el[1] == "cd":
+			if el[2] == "..\n":
+				currDir.pop()
+			else:
+				currDir.append(el[2].split("\n")[0])
+				strDir = "#".join(currDir)
+				# print(strDir)
+				if dirDict.get(strDir) == None:
+					# print('here')
+					dirDict[strDir] = [[],[]]
+	elif el[0] == "dir":
+		stringCurrDir = "#".join(currDir)
+		newDir = currDir.copy()
+		newDir.append(el[1].split("\n")[0])
+		strDir = "#".join(newDir)
+		dirDict[stringCurrDir][0].append(strDir)
+		# print(strDir)
+	else:
+		# print(currDir)
+		strDir = "#".join(currDir)
+		dirDict[strDir][1].append(int(el[0]))
 
-		if len(charStr) == 14:
-			dict1 = {}
-			flag = True
-			for c in charStr:
-				if dict1.get(c):
-					dict1[c] += 1
-				else:
-					dict1[c] = 1
-			for c in charStr:
-				if dict1[c] > 1:
-					flag = False
-			if flag and firstTime:
-				print('in here')
-				finalCounter = counter
-				finalStr = charStr
-				firstTime = False
+	# print(splLine)
+# print(dirDict)
 
-		counter+=1
-				# print("we have a winner at {}".format(counter))
-	print("we have a winner with {} at {}".format(finalStr, finalCounter))
+totalDiskUsed = sumDir(dirDict,"/")
+availableDisk = totalDisk - totalDiskUsed
+spaceNeeded = unusedNeeded - availableDisk
+print(spaceNeeded)
 
+dirSizes = {}
+for key in dirDict:
+	dirSizes[key] = sumDir(dirDict,key)
 
+smallestSize = unusedNeeded
 
+for key in dirSizes:
+	x = int(dirSizes[key])
+	if x > spaceNeeded:
+		if x < smallestSize:
+			smallestSize = dirSizes[key]
 
-		# dict1 = {}
-		# for c in charStr:
-
-
-		
-
+print(smallestSize)
