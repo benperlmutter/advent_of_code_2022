@@ -7,7 +7,6 @@ def sumDir(a):
 		collector = 0
 		for num in a[1]:
 			collector += num
-			# print(collector)
 		return collector
 	else:
 		acc = 0

@@ -2,19 +2,18 @@
 
 def sumDir(dirDict,key):
 	a = dirDict[key]
-	acc = 0
+	collector = 0
 	if a[0] == []:
-		collector = 0
 		for num in a[1]:
 			collector += num
 		return collector
 	else:
 		for d in a[0]:
-			acc += sumDir(dirDict,d)
+			collector += sumDir(dirDict,d)
 	for n in a[1]:
-		acc += n
+		collector += n
 
-	return acc
+	return collector
 
 
 # file1 = open('simple_input.txt', 'r')
