@@ -1,0 +1,65 @@
+['30373', '25512', '65332', '33549', '35390']
+2
+column 32633 and cNum 2
+appended 2
+2
+column 05535 and cNum 5
+appended 5
+2
+column 35353 and cNum 5
+appended 5
+2
+column 71349 and cNum 1
+2
+column 32290 and cNum 2
+appended 2
+3
+column 32633 and cNum 6
+appended 6
+3
+column 05535 and cNum 5
+appended 5
+3
+column 35353 and cNum 3
+3
+column 71349 and cNum 3
+appended 3
+3
+column 32290 and cNum 2
+appended 2
+4
+column 32633 and cNum 3
+appended 3
+4
+column 05535 and cNum 3
+4
+column 35353 and cNum 5
+appended 5
+4
+column 71349 and cNum 4
+4
+column 32290 and cNum 9
+appended 9
+['3', 0, '30373']
+['0', 1, '30373']
+['3', 2, '30373']
+['7', 3, '30373']
+['3', 4, '30373']
+['2', 0, '25512']
+['5', 1, '25512']
+['5', 2, '25512']
+['2', 4, '25512']
+['6', 0, '65332']
+['5', 1, '65332']
+['3', 3, '65332']
+['2', 4, '65332']
+['3', 0, '33549']
+['5', 2, '33549']
+['9', 4, '33549']
+['3', 0, '35390']
+['5', 1, '35390']
+['3', 2, '35390']
+['9', 3, '35390']
+['0', 4, '35390']
+21
+{0: '32633', 1: '05535', 2: '35353', 3: '71349', 4: '32290'}
