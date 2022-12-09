@@ -36,8 +36,8 @@ def visibleTree(s, i):
 		return False
 
 
-file1 = open('sample_input.txt', 'r')
-# file1 = open('input.txt', 'r')
+# file1 = open('sample_input.txt', 'r')
+file1 = open('input.txt', 'r')
 lines = file1.readlines()
 
 rows = []
@@ -63,24 +63,20 @@ for line in lines:
 				columnIter += 1
 
 print(rows)
-rowIter = 1
+rowIter = 0
 rowSize = len(rows)
 
-for r in rows:
-	charRowIter = 0
-	for char in r:
-		if rowIter == 1 or rowIter == rowSize:
-			visibleTrees.append([char,charRowIter,r])
-		else:
-			# print(char)
-			t1 = vTree(char,r[:charRowIter])
-			t2 = vTree(char,r[charRowIter+1:])
-			print(rowIter)
-			print("column {} and cNum {}".format(columns[charRowIter],columns[charRowIter][rowIter-1]))
-			if t1 or t2:
-				visibleTrees.append([char,charRowIter,r])
-				print("appended {}".format(char))
-		charRowIter += 1
+for r in rows: 
+	for columnIter in columns:
+		print(r[columnIter])
+		print("the 4 pieces are \n{}\n{}\n{}\n{}\n".format(columns[columnIter][:rowIter], columns[columnIter][rowIter+1:], r[:columnIter], r[columnIter+1:]))
+		t1 = vTree(r[columnIter],columns[columnIter][:rowIter])
+		t2 = vTree(r[columnIter],columns[columnIter][rowIter+1:])
+		t3 = vTree(r[columnIter],r[:columnIter])
+		t4 = vTree(r[columnIter],r[columnIter+1:])
+		if t1 or t2 or t3 or t4:
+			visibleTrees.append(r[columnIter])
+		print('\n')
 	rowIter += 1
 
 
@@ -89,35 +85,5 @@ for x in visibleTrees:
 	
 print(len(visibleTrees))	
 
-
-# print(visibleTrees)
 print(columns)
-
-# for r in rows:
-# 	i = 0
-# 	for n in r:
-# 		if visibleTree(r, i) and i != 0:
-# 			# print("index {} char {} in row {} is visible".format(i,n,r))
-# 			print("appending {}".format(n))
-# 			visibleTrees.append([i,n,r])
-# 			# print('break')
-# 			# print(visibleTrees)
-# 		i += 1
-
-# for key, value in columns.items():
-# 	# print(value)
-# 	i = 0
-# 	for n in value:
-# 		if visibleTree(value, i) and i != 0:
-# 			# print("index {} char {} in row {} is visible".format(i,n,r))
-# 			print("appending {}".format(n))
-# 			visibleTrees.append([i,n,value])
-# 			# print('break')
-# 		i += 1
-
-# for i in visibleTrees:
-# 	print(i)
-# print(len(visibleTrees))
-
-
 
