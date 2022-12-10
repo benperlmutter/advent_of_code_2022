@@ -1,75 +1,70 @@
-#dec1 1
+#dec8 1
 
-def sumDir(dirDict,key):
-	a = dirDict[key]
-	collector = 0
-	if a[0] == []:
-		for num in a[1]:
-			collector += num
-		return collector
+def vTree(char, s):
+	# print("this is s {}".format(s))	
+	# print("this is char {}".format(char))
+	# print(s)
+	if len(s) < 1:
+		return 0
 	else:
-		for d in a[0]:
-			collector += sumDir(dirDict,d)
-	for n in a[1]:
-		collector += n
+		if int(char) > int(s[0]):
+			return 1 + vTree(char, s[1:])
+		else:
+			return 1
 
-	return collector
 
-totalDisk = 70000000
-unusedNeeded = 30000000
-# file1 = open('simple_input.txt', 'r')
 # file1 = open('sample_input.txt', 'r')
 file1 = open('input.txt', 'r')
 lines = file1.readlines()
 
-dirDict = {"/":[[],[]]}
+rows = []
+columns = {}
+visibleTrees = []
 
-currDir = []
-acc = 0
+row1 = 0
+
 for line in lines:
-	el = line.split(" ")
-	if el[0] == "$":
-		acc = 0
-		if el[1] == "cd":
-			if el[2] == "..\n":
-				currDir.pop()
-			else:
-				currDir.append(el[2].split("\n")[0])
-				strDir = "#".join(currDir)
-				# print(strDir)
-				if dirDict.get(strDir) == None:
-					# print('here')
-					dirDict[strDir] = [[],[]]
-	elif el[0] == "dir":
-		stringCurrDir = "#".join(currDir)
-		newDir = currDir.copy()
-		newDir.append(el[1].split("\n")[0])
-		strDir = "#".join(newDir)
-		dirDict[stringCurrDir][0].append(strDir)
-		# print(strDir)
+	# print(line)
+	columnIter = 0
+	rows.append(line.split('\n')[0])
+	if row1 == 0:
+		for char in line:
+			if char != '\n':
+				columns[columnIter] = char
+				columnIter += 1
+		row1 += 1
 	else:
-		# print(currDir)
-		strDir = "#".join(currDir)
-		dirDict[strDir][1].append(int(el[0]))
+		for char in line:
+			if char != '\n':
+				columns[columnIter] += char
+				columnIter += 1
 
-	# print(splLine)
-# print(dirDict)
+# print(rows)
+rowIter = 0
+rowSize = len(rows)
+maxScore = 0
+for r in rows: 
+	for columnIter in columns:
+		c = columns[columnIter]
+		print("r is {}".format(r))
+		t1 = vTree(r[columnIter],c[::-1][len(c)-rowIter:])
+		print("# is {} and string is {} and score is {}".format(r[columnIter],c[::-1][len(c)-rowIter:], t1))
+		t2 = vTree(r[columnIter],columns[columnIter][rowIter+1:])
+		print("# is {} and string is {} and score is {}".format(r[columnIter],columns[columnIter][rowIter+1:], t2))
+		t3 = vTree(r[columnIter],r[::-1][len(r)-columnIter:])
+		print("# is {} and string is {} and score is {}".format(r[columnIter],r[::-1][len(r)-columnIter:], t3))
+		t4 = vTree(r[columnIter],r[columnIter+1:])
+		print("# is {} and string is {} and score is {}".format(r[columnIter],r[columnIter+1:], t4))
+		score = t1 * t2 * t3 * t4
+		print("scores are {}{}{}{}".format(t1,t2,t3,t4))
+		if score > maxScore:
+			maxScore = score
+			# print(r[columnIter])
+			# print("the 4 pieces are \n{}\n{}\n{}\n{}\n".format(columns[columnIter][:rowIter], columns[columnIter][rowIter+1:], r[:len(r)-columnIter:-1], r[columnIter+1:]))
 
-totalDiskUsed = sumDir(dirDict,"/")
-availableDisk = totalDisk - totalDiskUsed
-spaceNeeded = unusedNeeded - availableDisk
-print(spaceNeeded)
+	rowIter += 1
+	
+print(maxScore)	
 
-dirSizes = {}
-for key in dirDict:
-	dirSizes[key] = sumDir(dirDict,key)
+print(columns)
 
-smallestSize = unusedNeeded
-
-for key in dirSizes:
-	x = int(dirSizes[key])
-	if x > spaceNeeded:
-		if x < smallestSize:
-			smallestSize = dirSizes[key]
-
-print(smallestSize)
