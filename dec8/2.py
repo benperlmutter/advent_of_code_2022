@@ -1,4 +1,17 @@
-#dec9 2
+#dec8 1
+
+def vTree(char, s):
+	# print("this is s {}".format(s))	
+	# print("this is char {}".format(char))
+	# print(s)
+	if len(s) < 1:
+		return 0
+	else:
+		if int(char) > int(s[0]):
+			return 1 + vTree(char, s[1:])
+		else:
+			return 1
+
 
 # file1 = open('sample_input.txt', 'r')
 file1 = open('input.txt', 'r')

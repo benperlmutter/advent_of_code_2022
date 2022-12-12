@@ -1,70 +1,79 @@
-#dec8 1
+#dec9 2
 
-def vTree(char, s):
-	# print("this is s {}".format(s))	
-	# print("this is char {}".format(char))
-	# print(s)
-	if len(s) < 1:
-		return 0
-	else:
-		if int(char) > int(s[0]):
-			return 1 + vTree(char, s[1:])
-		else:
-			return 1
-
-
-# file1 = open('sample_input.txt', 'r')
-file1 = open('input.txt', 'r')
+file1 = open('sample_input2.txt', 'r')
+# file1 = open('input.txt', 'r')
 lines = file1.readlines()
 
-rows = []
-columns = {}
-visibleTrees = []
+def moveRope(coord, direction, num, h, t, moveDict):
+	for i in range(num):
+		# print(moveDict)
+		if coord == "x":
+			if direction == "add":
+				h[0] += 1
+				if abs(h[0] - t[0]) > 1:
+					if abs(h[1] - t[1]) == 1:
+						t[1] = h[1]
+					t[0] += 1
+					moveDict.setdefault(""+str(t[0])+","+str(t[1]), 0)
+					moveDict[""+str(t[0])+","+str(t[1])] += 1
 
-row1 = 0
+			else:
+				h[0] -= 1
+				if abs(h[0] - t[0]) > 1:
+					if abs(h[1] - t[1]) == 1:
+						t[1] = h[1]
+					t[0] -= 1
+					moveDict.setdefault(""+str(t[0])+","+str(t[1]), 0)
+					moveDict[""+str(t[0])+","+str(t[1])] += 1
+
+		else:
+			if direction == "add":
+				h[1] += 1
+				if abs(h[1] - t[1]) > 1:
+					if abs(h[0] - t[0]) == 1:
+						t[0] = h[0]
+					t[1] += 1
+					moveDict.setdefault(""+str(t[0])+","+str(t[1]), 0)
+					moveDict[""+str(t[0])+","+str(t[1])] += 1
+			else:
+				h[1] -= 1
+				if abs(h[1] - t[1]) > 1:
+					if abs(h[0] - t[0]) == 1:
+						t[0] = h[0]
+					t[1] -= 1
+					moveDict.setdefault(""+str(t[0])+","+str(t[1]), 0)
+					moveDict[""+str(t[0])+","+str(t[1])] += 1
+
+# def def_value():
+# 	return 0
+
+head = [0,0]
+tail = [0,0]
+knots = 9
+for i in range(knots):
+	s = str(i)+",0,0"
+	moveDict = {s: 1}
+
+print(moveDict)
 
 for line in lines:
-	# print(line)
-	columnIter = 0
-	rows.append(line.split('\n')[0])
-	if row1 == 0:
-		for char in line:
-			if char != '\n':
-				columns[columnIter] = char
-				columnIter += 1
-		row1 += 1
+	l = line.split(" ")
+	direction = l[0]
+	number = int(l[1])
+	if direction == "R":
+		# print("add to x coord")
+		moveRope("x", "add", number, head, tail, moveDict)
+	elif direction == "U":
+		# print("add to y coord")
+		moveRope("y", "add", number, head, tail, moveDict)
+	elif direction == "D":
+		# print("subtract from y coord")
+		moveRope("y", "subtract", number, head, tail, moveDict)
 	else:
-		for char in line:
-			if char != '\n':
-				columns[columnIter] += char
-				columnIter += 1
+		# print("subtract from x coord")
+		moveRope("x", "subtract", number, head, tail, moveDict)
 
-# print(rows)
-rowIter = 0
-rowSize = len(rows)
-maxScore = 0
-for r in rows: 
-	for columnIter in columns:
-		c = columns[columnIter]
-		print("r is {}".format(r))
-		t1 = vTree(r[columnIter],c[::-1][len(c)-rowIter:])
-		print("# is {} and string is {} and score is {}".format(r[columnIter],c[::-1][len(c)-rowIter:], t1))
-		t2 = vTree(r[columnIter],columns[columnIter][rowIter+1:])
-		print("# is {} and string is {} and score is {}".format(r[columnIter],columns[columnIter][rowIter+1:], t2))
-		t3 = vTree(r[columnIter],r[::-1][len(r)-columnIter:])
-		print("# is {} and string is {} and score is {}".format(r[columnIter],r[::-1][len(r)-columnIter:], t3))
-		t4 = vTree(r[columnIter],r[columnIter+1:])
-		print("# is {} and string is {} and score is {}".format(r[columnIter],r[columnIter+1:], t4))
-		score = t1 * t2 * t3 * t4
-		print("scores are {}{}{}{}".format(t1,t2,t3,t4))
-		if score > maxScore:
-			maxScore = score
-			# print(r[columnIter])
-			# print("the 4 pieces are \n{}\n{}\n{}\n{}\n".format(columns[columnIter][:rowIter], columns[columnIter][rowIter+1:], r[:len(r)-columnIter:-1], r[columnIter+1:]))
-
-	rowIter += 1
-	
-print(maxScore)	
-
-print(columns)
-
+	# print(direction)
+	# print(number)
+# print(moveDict)
+# print(len(moveDict))
